@@ -29,7 +29,7 @@ public class AuthenticationController {
      * @param loginRequest Objeto de solicitud de inicio de sesión que contiene las credenciales del usuario.
      * @return ResponseEntity que contiene la respuesta de autenticación en caso de éxito.
      */
-    @PreAuthorize("permitAll")
+    @PreAuthorize("jajaja")
     @PostMapping("/authenticate")
     public ResponseEntity<LoginResponse> authenticate(
             @RequestBody @Valid LoginRequest loginRequest

@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorDto> handlerGeneralExceptions(Exception exception,
                                                                 HttpServletRequest request,
                                                                 WebRequest webRequest){
+        exception.printStackTrace();
         if(exception instanceof HttpClientErrorException){
             return this.handleHttpClientErrorException((HttpClientErrorException) exception, request, webRequest);
         }else if(exception instanceof AccessDeniedException){
