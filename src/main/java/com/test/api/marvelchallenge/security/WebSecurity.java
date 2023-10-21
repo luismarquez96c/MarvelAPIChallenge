@@ -16,8 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
+/**
+ * La clase `WebSecurity` configura la seguridad de la aplicación mediante Spring Security.
+ * Se habilita la autenticación basada en tokens JWT, se deshabilita CSRF y se configuran reglas de autorización.
+ */
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class WebSecurity {
 
@@ -27,11 +31,18 @@ public class WebSecurity {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
+    /**
+     * Configura la cadena de filtros de seguridad.
+     *
+     * @param http El objeto `HttpSecurity` que se configura para establecer políticas de seguridad.
+     * @return La cadena de filtros de seguridad configurada.
+     * @throws Exception Si se produce una excepción durante la configuración.
+     */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
-                .csrf( config -> config.disable() )
+                .csrf(config -> config.disable())
                 .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(config -> {
@@ -42,3 +53,4 @@ public class WebSecurity {
     }
 
 }
+

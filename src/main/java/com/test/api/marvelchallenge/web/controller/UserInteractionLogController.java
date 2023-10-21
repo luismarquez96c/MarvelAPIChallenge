@@ -47,7 +47,7 @@ public class UserInteractionLogController {
      * @param limit    Cantidad máxima de resultados por página (por defecto, 20).
      * @return ResponseEntity que contiene una página de registros de interacciones de usuarios filtrados por nombre de usuario.
      */
-    @PreAuthorize("hasAuthority('user-interaction:read-by-username') || (@interactionLogValidator.validate(#username) && hasAuthority('user-interaction:read-my-interactions') )")
+    @PreAuthorize("hasAuthority('user-interaction:read-by-username') || @interactionLogValidator.validate(#username)")
     @GetMapping("/{username}")
     public ResponseEntity<Page<GetUserInteractionLogDto>> findByUsername(
             @PathVariable String username,

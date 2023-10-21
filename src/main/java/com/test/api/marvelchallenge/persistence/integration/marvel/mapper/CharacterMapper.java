@@ -8,8 +8,18 @@ import com.test.api.marvelchallenge.persistence.integration.marvel.dto.Thumbnail
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La clase `CharacterMapper` proporciona métodos para mapear datos de objetos JsonNode a objetos DTO relacionados con personajes.
+ */
 public class CharacterMapper {
 
+    /**
+     * Convierte un objeto JsonNode que representa una lista de personajes en una lista de objetos CharacterDto.
+     *
+     * @param rootNode El nodo JsonNode que contiene la lista de personajes.
+     * @return Una lista de objetos CharacterDto que representan los personajes.
+     * @throws IllegalArgumentException Si el nodo JsonNode es nulo.
+     */
     public static List<CharacterDto> toDtoList(JsonNode rootNode){
         ArrayNode resultsNode = getResultsNode(rootNode);
 
@@ -21,6 +31,13 @@ public class CharacterMapper {
         return characters;
     }
 
+    /**
+     * Convierte un objeto JsonNode que representa un personaje en un objeto CharacterDto.
+     *
+     * @param characterNode El nodo JsonNode que contiene información sobre un personaje.
+     * @return Un objeto CharacterDto que representa el personaje.
+     * @throws IllegalArgumentException Si el nodo JsonNode es nulo.
+     */
     private static CharacterDto toDto(JsonNode characterNode) {
         if(characterNode == null){
             throw new IllegalArgumentException("El nodo json no puede ser null");
@@ -37,6 +54,13 @@ public class CharacterMapper {
         return dto;
     }
 
+    /**
+     * Obtiene el nodo "results" de un objeto JsonNode.
+     *
+     * @param rootNode El nodo JsonNode que contiene la información de los resultados.
+     * @return El nodo "results" que contiene la lista de personajes.
+     * @throws IllegalArgumentException Si el nodo JsonNode es nulo.
+     */
     private static ArrayNode getResultsNode(JsonNode rootNode){
         if(rootNode == null){
             throw new IllegalArgumentException("El nodo json no puede ser null");
@@ -46,6 +70,13 @@ public class CharacterMapper {
         return (ArrayNode) dataNode.get("results");
     }
 
+    /**
+     * Convierte un objeto JsonNode que representa una lista de información detallada de personajes en una lista de objetos CharacterDto.CharacterInfoDto.
+     *
+     * @param response El nodo JsonNode que contiene la lista de información detallada de personajes.
+     * @return Una lista de objetos CharacterDto.CharacterInfoDto que representan la información detallada de personajes.
+     * @throws IllegalArgumentException Si el nodo JsonNode es nulo.
+     */
     public static List<CharacterDto.CharacterInfoDto> toInfoDtoList(JsonNode response) {
         ArrayNode resultsNode = getResultsNode(response);
 
@@ -55,9 +86,15 @@ public class CharacterMapper {
         } );
 
         return characters;
-
     }
 
+    /**
+     * Convierte un objeto JsonNode que representa información detallada de un personaje en un objeto CharacterDto.CharacterInfoDto.
+     *
+     * @param characterNode El nodo JsonNode que contiene información detallada de un personaje.
+     * @return Un objeto CharacterDto.CharacterInfoDto que representa la información detallada del personaje.
+     * @throws IllegalArgumentException Si el nodo JsonNode es nulo.
+     */
     private static CharacterDto.CharacterInfoDto toInfoDto(JsonNode characterNode) {
         if(characterNode == null){
             throw new IllegalArgumentException("El nodo json no puede ser null");
@@ -75,3 +112,4 @@ public class CharacterMapper {
         return dto;
     }
 }
+

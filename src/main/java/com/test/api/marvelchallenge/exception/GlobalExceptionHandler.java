@@ -12,9 +12,23 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.nio.file.AccessDeniedException;
 
+/**
+ * El manejador global de excepciones para la aplicación. Gestiona las excepciones generales y las redirige a
+ * manejadores de excepciones específicos según el tipo de excepción. Proporciona respuestas adecuadas para diferentes
+ * tipos de errores, incluyendo errores HTTP, denegación de acceso y excepciones generales.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Maneja las excepciones generales lanzadas en la aplicación. Redirige la excepción a un manejador específico
+     * según el tipo de excepción.
+     *
+     * @param exception La excepción general que se va a manejar.
+     * @param request La solicitud HTTP que generó la excepción.
+     * @param webRequest La solicitud web que generó la excepción.
+     * @return Una respuesta adecuada para el tipo de excepción.
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorDto> handlerGeneralExceptions(Exception exception,
                                                                 HttpServletRequest request,
@@ -32,6 +46,14 @@ public class GlobalExceptionHandler {
 
     }
 
+    /**
+     * Maneja una excepción genérica que no coincide con otros manejadores de excepciones específicos.
+     *
+     * @param exception La excepción genérica a manejar.
+     * @param request La solicitud HTTP que generó la excepción.
+     * @param webRequest La solicitud web que generó la excepción.
+     * @return Una respuesta interna del servidor con detalles de error.
+     */
     private ResponseEntity<ApiErrorDto> handleGenericException(
             Exception exception,
             HttpServletRequest request,
@@ -48,6 +70,15 @@ public class GlobalExceptionHandler {
 
     }
 
+    /**
+     * Maneja una excepción de tipo `AuthenticationCredentialsNotFoundException`, que indica que el usuario no tiene acceso
+     * a un recurso protegido debido a la falta de credenciales de autenticación.
+     *
+     * @param exception La excepción de falta de credenciales de autenticación.
+     * @param request La solicitud HTTP que generó la excepción.
+     * @param webRequest La solicitud web que generó la excepción.
+     * @return Una respuesta de error no autorizada.
+     */
     private ResponseEntity<ApiErrorDto> handleAuthenticationCredentialsNotFoundException(
             AuthenticationCredentialsNotFoundException exception,
             HttpServletRequest request,
@@ -63,6 +94,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(dto);
     }
 
+    /**
+     * Maneja una excepción de tipo `AccessDeniedException`, que indica que el usuario no tiene acceso a un recurso protegido
+     * debido a la denegación de acceso.
+     *
+     * @param exception La excepción de denegación de acceso.
+     * @param request La solicitud HTTP que generó la excepción.
+     * @param webRequest La solicitud web que generó la excepción.
+     * @return Una respuesta de error prohibido.
+     */
     private ResponseEntity<ApiErrorDto> handleAccessDeniedException(
             AccessDeniedException exception,
             HttpServletRequest request,
@@ -78,6 +118,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(dto);
     }
 
+    /**
+     * Maneja una excepción de cliente HTTP, como `HttpClientErrorException`, y determina la respuesta adecuada en función
+     * del tipo de error HTTP.
+     *
+     * @param exception La excepción de cliente HTTP.
+     * @param request La solicitud HTTP que generó la excepción.
+     * @param webRequest La solicitud web que generó la excepción.
+     * @return Una respuesta HTTP apropiada con detalles de error.
+     */
     private ResponseEntity<ApiErrorDto> handleHttpClientErrorException(
             HttpClientErrorException exception,
             HttpServletRequest request,

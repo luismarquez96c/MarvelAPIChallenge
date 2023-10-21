@@ -15,6 +15,9 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * El repositorio `ComicRepository` proporciona métodos para acceder y gestionar información de cómics desde la API de Marvel.
+ */
 @Repository
 public class ComicRepository {
 
@@ -27,11 +30,21 @@ public class ComicRepository {
     private String basePath;
     private String comicPath;
 
+    /**
+     * Inicializa la URL base para acceder a los cómics en la API de Marvel.
+     */
     @PostConstruct
     private void setPath(){
         comicPath = basePath.concat("/").concat("comics");
     }
 
+    /**
+     * Recupera una lista de cómics con la posibilidad de paginación y filtrado por personaje.
+     *
+     * @param pageable    La información de paginación que incluye el offset y el límite de resultados.
+     * @param characterId El ID del personaje para filtrar cómics específicos, o nulo si no se realiza un filtrado por personaje.
+     * @return Una lista de cómics en forma de objetos DTO.
+     */
     public List<ComicDto> findAll(MyPageable pageable, Long characterId) {
         Map<String, String> marvelQueryParams = getQueryParamsForFindAll(pageable, characterId);
 
@@ -40,6 +53,13 @@ public class ComicRepository {
         return ComicMapper.toDtoList(response);
     }
 
+    /**
+     * Construye los parámetros de consulta necesarios para recuperar cómics con paginación y filtrado por personaje.
+     *
+     * @param pageable    La información de paginación que incluye el offset y el límite de resultados.
+     * @param characterId El ID del personaje para filtrar cómics específicos, o nulo si no se realiza un filtrado por personaje.
+     * @return Un mapa de parámetros de consulta para la API de Marvel.
+     */
     private Map<String, String> getQueryParamsForFindAll(MyPageable pageable, Long characterId) {
         Map<String, String> marvelQueryParams = marvelAPIConfig.getAuthenticationQueryParams();
 
@@ -53,6 +73,12 @@ public class ComicRepository {
         return marvelQueryParams;
     }
 
+    /**
+     * Recupera información detallada sobre un cómic específico por su ID.
+     *
+     * @param comicId El ID del cómic que se desea recuperar.
+     * @return Un objeto DTO que representa el cómic.
+     */
     public ComicDto findById(Long comicId) {
         Map<String, String> marvelQueryParams = marvelAPIConfig.getAuthenticationQueryParams();
 
@@ -62,3 +88,4 @@ public class ComicRepository {
         return ComicMapper.toDtoList(response).get(0);
     }
 }
+
